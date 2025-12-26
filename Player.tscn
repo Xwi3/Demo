@@ -13,10 +13,10 @@ height = 66.0
 [sub_resource type="SpriteFrames" id="SpriteFrames_cxr5p"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": ExtResource("1_e80uo")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": ExtResource("2_cxr5p")
 }],
 "loop": true,
@@ -24,10 +24,10 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": ExtResource("3_tdg3f")
 }, {
-"duration": 1.0,
+"duration": 0.5,
 "texture": ExtResource("4_dtqjt")
 }],
 "loop": true,
@@ -39,6 +39,7 @@ animations = [{
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_cxr5p")
 metadata/_edit_group_ = true
+metadata/_edit_vertical_guides_ = [-187.0]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_e80uo")
@@ -46,6 +47,6 @@ shape = SubResource("CapsuleShape2D_e80uo")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_cxr5p")
-animation = &"up"
+animation = &"walk"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
