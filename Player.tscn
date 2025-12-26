@@ -36,6 +36,7 @@ animations = [{
 }]
 
 [node name="Player" type="Area2D"]
+visible = false
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_cxr5p")
 metadata/_edit_group_ = true

@@ -4,6 +4,9 @@ signal hit
 @export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
 
+var gcd = true
+var gcd_time = 1
+
 func start(pos):
 	position = pos
 	$CollisionShape2D.disabled = false
@@ -12,6 +15,9 @@ func start(pos):
 func _ready():
 	screen_size = get_viewport_rect().size
 
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("basic_attack"):
+		print("Q was pressed")
 
 func _process(delta):
 	var velocity = Vector2.ZERO # The player's movement vector.
@@ -47,3 +53,4 @@ func _on_body_entered(_body: Node2D) -> void:
 	hit.emit()
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)
+	
