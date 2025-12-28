@@ -4,6 +4,11 @@ signal hit
 @export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
 
+var playerState = PlayerState.new()
+
+var gcd = true
+var gcd_time = 1
+
 func start(pos):
 	position = pos
 	$CollisionShape2D.disabled = false
@@ -12,6 +17,15 @@ func start(pos):
 func _ready():
 	screen_size = get_viewport_rect().size
 
+func _unhandled_input(_event):
+	if Input.is_action_just_pressed("basic_attack"):
+		print("Q was pressed")
+		if (!playerState.is_gcd()):
+			print("attacked")
+			playerState.set_gcd(true)
+			$GCDTimer.start(playerState.gcd_time)
+		else:
+			print("inGcd")
 
 func _process(delta):
 	var velocity = Vector2.ZERO # The player's movement vector.
@@ -41,9 +55,22 @@ func _process(delta):
 		$AnimatedSprite2D.animation = "up"
 		$AnimatedSprite2D.flip_v = velocity.y > 0
 
+func _on_body_entered(_body: Node2D) -> void:
+	if (!playerState.is_invincible()):
+		playerState.set_invincible(true)
+		$InvincibilityTimer.start(1)
+		if (playerState.take_damage(1)):
+			hide() # Hide Player
+			hit.emit()
+			# Must be deferred as we can't change physics properties on a physics callback.
+			$CollisionShape2D.set_deferred("disabled", true)
+	else:
+		print("Iframes")
 
-func _on_body_entered(body: Node2D) -> void:
-	hide() # Hide Player
-	hit.emit()
-	# Must be deferred as we can't change physics properties on a physics callback.
-	$CollisionShape2D.set_deferred("disabled", true)
+func _on_invincibility_timer_timeout() -> void:
+	print("end Iframes")
+	playerState.set_invincible(false)
+
+func _on_gcd_timer_timeout() -> void:
+	print("end gcd")
+	playerState.set_gcd(false)
